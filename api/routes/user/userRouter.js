@@ -6,6 +6,14 @@ const userController = require("../../controllers/userController");
 // POST: /api/v1/user/login
 router.post("/login", (req, res, next) => {
   console.log("Login api");
+  userController
+    .login(req.body)
+    .then(result => {
+      res.json(result);
+    })
+    .catch(err => {
+      res.json(err);
+    });
 });
 
 // GET: /api/v1/user/logout

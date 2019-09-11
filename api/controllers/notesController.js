@@ -1,32 +1,35 @@
-const models = require("../lib/db/models");
+const models = require("../../models");
 
 let notesController = {};
 
-notesController.publicNotes = () => {
-  return new Promise((resolve, reject) => {
-    const note_result = models.Note.findAll({});
-    resolve(note_result);
+notesController.publicNotes = async () => {
+  const note_result = await models.Note.findAll({
+    where: {
+      isPublic: 0
+    }
   });
+  return note_result;
 };
 
-notesController.privateNotes = () => {
-  return new Promise((resolve, reject) => {
-    const note_result = models.Note.findAll({});
-    resolve(note_result);
+notesController.privateNotes = async () => {
+  const note_result = await models.Note.findAll({
+    where: {
+      isPublic: 1
+    }
   });
+  return note_result;
 };
 
-notesController.createNotes = data => {
+notesController.createNotes = async data => {
   console.log(data);
-  return new Promise((resolve, reject) => {
-    const add_note = {
-      title: data.title,
-      description: data.description
-    };
-    const note_result = models.Note.create(add_note);
-    console.log(note_result);
-    resolve(note_result);
-  });
+  const add_note = {
+    title: data.title,
+    description: data.description,
+    ispublic: data.ispublic
+  };
+  const note_result = await models.Note.create(add_note);
+  console.log(note_result);
+  return note_result;
 };
 
 module.exports = notesController;

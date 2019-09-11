@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Initialize db connection pool
-require("./api/lib/db/models");
+require("./models");
 
 const apiV1 = require("./api/routes/apiRoutes");
 

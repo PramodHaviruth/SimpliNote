@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 
 const notesController = require("../../controllers/notesController");
+const userController = require("../../controllers/userController");
 
 // POST: /api/v1/notes/addnotes
 router.post("/addnotes", (req, res, next) => {
@@ -18,7 +19,6 @@ router.post("/addnotes", (req, res, next) => {
 
 // GET: /api/v1/notes/publicnotes
 router.get("/publicnotes", (req, res, next) => {
-  console.log("display list of public notes");
   notesController
     .publicNotes()
     .then(result => {

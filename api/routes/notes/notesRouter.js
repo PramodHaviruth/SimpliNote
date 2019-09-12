@@ -12,9 +12,7 @@ router.post("/addnotes", (req, res, next) => {
     .then(result => {
       res.json(result);
     })
-    .catch(err => {
-      res.json(err);
-    });
+    .catch(next);
 });
 
 // GET: /api/v1/notes/publicnotes
@@ -24,9 +22,7 @@ router.get("/publicnotes", (req, res, next) => {
     .then(result => {
       res.json(result);
     })
-    .catch(err => {
-      res.json(err);
-    });
+    .catch(next);
 });
 
 // GET: /api/v1/notes/privatenotes
@@ -36,9 +32,7 @@ router.get("/privatenotes", (req, res, next) => {
     .then(result => {
       res.json(result);
     })
-    .catch(err => {
-      res.json(err);
-    });
+    .catch(next);
 });
 
 module.exports = router;

@@ -11,9 +11,7 @@ router.post("/login", (req, res, next) => {
     .then(result => {
       res.json(result);
     })
-    .catch(err => {
-      res.json(err);
-    });
+    .catch(next);
 });
 
 // GET: /api/v1/user/logout

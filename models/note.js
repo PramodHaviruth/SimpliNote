@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       title: DataTypes.STRING,
       description: DataTypes.STRING,
-      ispublic: DataTypes.INTEGER
+      ispublic: DataTypes.BOOLEAN
     },
     {}
   );

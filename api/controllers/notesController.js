@@ -57,12 +57,25 @@ notesController.createNotes = async data => {
   };
   const note_result = await models.Note.create(add_note);
 
-  const add_image = {
-    image_url: data.image_url,
-    note_id: note_result.dataValues.id
-  };
+  console.log(data.image_url);
 
-  const image_result = await models.Image.create(add_image);
+  if (!data.image_url) {
+    throw new HttpError(
+      "Bad Request",
+      "Please enter the required details",
+      400
+    );
+  } else {
+    data.image_url.forEach(async image => {
+      console.log(image + "--------------------" + note_result.dataValues.id);
+      const add_image = {
+        image_url: image,
+        note_id: note_result.dataValues.id
+      };
+
+      const image_result = await models.Image.create(add_image);
+    });
+  }
 
   return note_result;
 };

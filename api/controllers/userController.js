@@ -20,11 +20,10 @@ userController.login = async data => {
     }
   });
 
-  console.log(user_result);
-
   if (!user_result.length)
     throw new HttpError("Bad Request", "invalid credentials.", 400);
 
+  var login_result;
   if (user_result[0].dataValues.id) {
     const login_update_result = await models.User.update(
       {
@@ -37,10 +36,13 @@ userController.login = async data => {
       }
     );
 
-    console.log(login_update_result);
+    if (login_update_result) login_result = user_result[0].dataValues.id;
+    console.log(login_result);
+  } else {
+    login_result = -999;
   }
 
-  return user_result;
+  return login_result;
 };
 
 userController.authenticate = async data => {

@@ -43,7 +43,7 @@ notesController.privateNotes = async () => {
 notesController.createNotes = async data => {
   console.log(data);
 
-  if (!data.title || !data.description || !data.ispublic)
+  if (!data.title || !data.description)
     throw new HttpError(
       "Bad Request",
       "Please enter the required details",
@@ -57,24 +57,36 @@ notesController.createNotes = async data => {
   };
   const note_result = await models.Note.create(add_note);
 
-  console.log(data.image_url);
+  console.log(note_result);
 
-  if (!data.image_url) {
-    throw new HttpError(
-      "Bad Request",
-      "Please enter the required details",
-      400
-    );
-  } else {
-    data.image_url.forEach(async image => {
-      console.log(image + "--------------------" + note_result.dataValues.id);
+  if (data.image_url) {
+    console.log("images list " + data.image_url.length);
+
+    if (data.image_url.length > 0) {
+      data.image_url.forEach(async image => {
+        console.log(image + "--------------------" + note_result.dataValues.id);
+        const add_image = {
+          image_url: image,
+          note_id: note_result.dataValues.id
+        };
+
+        const image_result = await models.Image.create(add_image);
+      });
+    } else {
       const add_image = {
-        image_url: image,
+        image_url: null,
         note_id: note_result.dataValues.id
       };
 
       const image_result = await models.Image.create(add_image);
-    });
+    }
+  } else {
+    const add_image = {
+      image_url: null,
+      note_id: note_result.dataValues.id
+    };
+
+    const image_result = await models.Image.create(add_image);
   }
 
   return note_result;

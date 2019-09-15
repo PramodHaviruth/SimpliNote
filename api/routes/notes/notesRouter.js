@@ -21,6 +21,36 @@ router.post(
   }
 );
 
+//PUT: /api/v1/notes/updatenote/1
+router.put(
+  "/updatenote/:id",
+  authMiddleware.authenticateUser(),
+  (req, res, next) => {
+    console.log("note id" + req.params.id);
+    notesController
+      .updateNote(req.body, req.params.id, req.session.user)
+      .then(result => {
+        res.json(result);
+      })
+      .catch(next);
+  }
+);
+
+//PATCH: /api/v1/notes/updatenote/title/1
+router.patch(
+  "/updatenote/title/:id",
+  authMiddleware.authenticateUser(),
+  (req, res, next) => {
+    console.log("note id" + req.params.id);
+    notesController
+      .updateNoteTitle(req.body, req.params.id, req.session.user)
+      .then(result => {
+        res.json(result);
+      })
+      .catch(next);
+  }
+);
+
 // GET: /api/v1/notes/publicnotes
 router.get("/publicnotes", (req, res, next) => {
   notesController

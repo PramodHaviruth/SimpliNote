@@ -114,4 +114,50 @@ notesController.createNotes = async (data, userId) => {
   return note_result;
 };
 
+notesController.updateNote = async (data, noteId, userId) => {
+  if (!data.title || !data.description || !noteId)
+    throw new HttpError(
+      "Bad Request",
+      "Please provide the required details",
+      400
+    );
+
+  const update_note = {
+    title: data.title,
+    description: data.description,
+    ispublic: data.ispublic
+  };
+
+  const update_note_result = await models.Note.update(update_note, {
+    where: {
+      id: noteId,
+      user_id: userId
+    }
+  });
+
+  return update_note_result;
+};
+
+notesController.updateNoteTitle = async (data, noteId, userId) => {
+  if (!data.title || !noteId)
+    throw new HttpError(
+      "Bad Request",
+      "Please provide the required details",
+      400
+    );
+
+  const update_note_title = {
+    title: data.title
+  };
+
+  const update_note_result = await models.Note.update(update_note_title, {
+    where: {
+      id: noteId,
+      user_id: userId
+    }
+  });
+
+  return update_note_result;
+};
+
 module.exports = notesController;

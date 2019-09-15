@@ -6,11 +6,47 @@ const Op = Sequelize.Op;
 
 let notesController = {};
 
-notesController.publicNotes = async () => {
+notesController.publicNotes = async userId => {
+  var note_result;
+  if (userId) {
+    note_result = await models.Note.findAll({
+      attributes: ["id", "title", "description", "ispublic", "user_id"],
+      where: {
+        isPublic: true,
+        user_id: userId
+      },
+      include: [
+        {
+          model: models.Image,
+          attributes: ["id", "image_url"],
+          where: { note_id: { [Op.col]: "note.id" } }
+        }
+      ]
+    });
+  } else {
+    note_result = await models.Note.findAll({
+      attributes: ["id", "title", "description", "ispublic", "user_id"],
+      where: {
+        isPublic: true
+      },
+      include: [
+        {
+          model: models.Image,
+          attributes: ["id", "image_url"],
+          where: { note_id: { [Op.col]: "note.id" } }
+        }
+      ]
+    });
+  }
+  return note_result;
+};
+
+notesController.privateNotes = async userId => {
   const note_result = await models.Note.findAll({
-    attributes: ["id", "title", "description", "ispublic"],
+    attributes: ["id", "title", "description", "ispublic", "user_id"],
     where: {
-      isPublic: true
+      isPublic: false,
+      user_id: userId
     },
     include: [
       {
@@ -23,24 +59,7 @@ notesController.publicNotes = async () => {
   return note_result;
 };
 
-notesController.privateNotes = async () => {
-  const note_result = await models.Note.findAll({
-    attributes: ["id", "title", "description", "ispublic"],
-    where: {
-      isPublic: false
-    },
-    include: [
-      {
-        model: models.Image,
-        attributes: ["id", "image_url"],
-        where: { note_id: { [Op.col]: "note.id" } }
-      }
-    ]
-  });
-  return note_result;
-};
-
-notesController.createNotes = async data => {
+notesController.createNotes = async (data, userId) => {
   console.log(data);
 
   if (!data.title || !data.description)
@@ -50,10 +69,13 @@ notesController.createNotes = async data => {
       400
     );
 
+  console.log("userId ====" + userId);
+
   const add_note = {
     title: data.title,
     description: data.description,
-    ispublic: data.ispublic
+    ispublic: data.ispublic,
+    user_id: userId
   };
   const note_result = await models.Note.create(add_note);
 

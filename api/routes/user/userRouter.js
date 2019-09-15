@@ -18,10 +18,13 @@ router.post("/login", (req, res, next) => {
 });
 
 // GET: /api/v1/user/logout
-router.get(
-  "/logout",
-  authMiddleware.authenticateUser(),
-  (req, res, next) => {}
-);
+router.get("/logout", authMiddleware.authenticateUser(), (req, res, next) => {
+  req.session.destroy(function(err) {
+    // cannot access session here
+    if (err) res.json(err);
+
+    res.json("Logged Out");
+  });
+});
 
 module.exports = router;

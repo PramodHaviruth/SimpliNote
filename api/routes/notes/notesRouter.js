@@ -13,7 +13,7 @@ router.post(
   (req, res, next) => {
     console.log("create notes");
     notesController
-      .createNotes(req.body)
+      .createNotes(req.body, req.session.user)
       .then(result => {
         res.json(result);
       })
@@ -24,7 +24,7 @@ router.post(
 // GET: /api/v1/notes/publicnotes
 router.get("/publicnotes", (req, res, next) => {
   notesController
-    .publicNotes()
+    .publicNotes(req.session.user)
     .then(result => {
       res.json(result);
     })
@@ -37,7 +37,7 @@ router.get(
   authMiddleware.authenticateUser(),
   (req, res, next) => {
     notesController
-      .privateNotes()
+      .privateNotes(req.session.user)
       .then(result => {
         res.json(result);
       })

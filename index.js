@@ -30,6 +30,17 @@ const apiV1 = require("./api/routes/apiRoutes");
 
 app.use("/api/v1", apiV1);
 
+//An error handling middleware
+
+app.use(function(err, req, res, next) {
+  res.status(500);
+  res.send("Oops, something went wrong.");
+});
+
+app.use(function(req, res, next) {
+  res.status(404).send("Sorry can't find that!");
+});
+
 app.listen(8000, () => {
   console.log("Started Listening at port 8000....!");
 });

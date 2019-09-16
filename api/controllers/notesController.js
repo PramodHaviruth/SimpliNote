@@ -160,4 +160,27 @@ notesController.updateNoteTitle = async (data, noteId, userId) => {
   return update_note_result;
 };
 
+notesController.deleteNote = async noteId => {
+  if (!noteId)
+    throw new HttpError(
+      "Bad Request",
+      "Please provide the required details",
+      400
+    );
+
+  const delete_image_result = await models.Image.destroy({
+    where: {
+      note_id: noteId
+    }
+  });
+
+  const delete_note_result = await models.Note.destroy({
+    where: {
+      id: noteId
+    }
+  });
+
+  return delete_note_result;
+};
+
 module.exports = notesController;

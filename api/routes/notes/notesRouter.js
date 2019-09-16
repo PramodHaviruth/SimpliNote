@@ -51,6 +51,22 @@ router.patch(
   }
 );
 
+//DELETE: /api/v1/notes/Deletenote/1
+router.delete(
+  "/deletenote/:id",
+  authMiddleware.authenticateUser(),
+  (req, res, next) => {
+    console.log("note id" + req.params.id);
+    console.log("note body" + req.body);
+    notesController
+      .deleteNote(req.params.id)
+      .then(result => {
+        res.json(result);
+      })
+      .catch(next);
+  }
+);
+
 // GET: /api/v1/notes/publicnotes
 router.get("/publicnotes", (req, res, next) => {
   notesController
